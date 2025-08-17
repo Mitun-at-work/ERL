@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-[#121212] text-white;
+}
+
+/* Slim seek + volume sliders */
+/* universal slim slider */
+input[type="range"].slim {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;               /* thinner bar */
+  border-radius: 9999px;
+  background: #333;
+  cursor: pointer;
+}
+
+/* Chrome/Edge/Safari track */
+input[type="range"].slim::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 9999px;
+  background: linear-gradient(to right, #22c55e var(--seek-progress, 0%), #333 var(--seek-progress, 0%));
+}
+input[type="range"].slim::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  margin-top: -4px;          /* center thumb */
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  background: #fff;
+  border: none;
+}
+
+/* Firefox track */
+input[type="range"].slim::-moz-range-track {
+  height: 4px;
+  border-radius: 9999px;
+  background: #333;
+}
+input[type="range"].slim::-moz-range-progress {
+  height: 4px;
+  border-radius: 9999px;
+  background: #22c55e;       /* green progress */
+}
+input[type="range"].slim::-moz-range-thumb {
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  background: #fff;
+  border: none;
+}
