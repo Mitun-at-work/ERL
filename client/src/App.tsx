@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Album from "./pages/Album";
 import PlayerBar from "./components/PlayerBar";
-import SettingsPage from "./pages/Settings";
+import TrackPage from "./pages/TrackPage";
 
 export default function App() {
   return (
@@ -11,7 +11,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/album/:name" element={<Album />} />
-          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/track/" element={<TrackPage />} />
         </Routes>
       </div>
       <PlayerBar />

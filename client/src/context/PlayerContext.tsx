@@ -172,9 +172,13 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
       audio.src = url;
       play();
 
-      // increment play count in DB
-      fetch(`/api/tracks/${encodeURIComponent(currentTrack.file)}/play`, {
+      // increment play count in DB by calling your updated backend /listen
+      fetch("/listen", {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ track: `${encodeURIComponent(album)}/${currentTrack.file}` }),
+      }).catch(() => {
+        // silently ignore errors
       });
     }
   }, [album, currentTrack, audio, play, musicBase]);

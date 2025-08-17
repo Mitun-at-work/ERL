@@ -11,18 +11,10 @@ import Liked from "./pages/Liked";
 import Sidebar from "./components/Sidebar.tsx";
 import PlayerBar from "./components/PlayerBar";
 
-import { Menu, Settings } from "lucide-react";
+import { Menu } from "lucide-react";
 import "./index.css";
-import SettingsPage from "./pages/Settings.tsx";
+import TrackPage from "./pages/TrackPage.tsx";
 
-function NotFound() {
-  return (
-    <div className="p-6 text-white bg-[#121212] min-h-screen">
-      <h1 className="text-3xl font-bold">404</h1>
-      <p className="text-gray-400">Page not found.</p>
-    </div>
-  );
-}
 
 function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -55,8 +47,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/album/:name" element={<Album />} />
               <Route path="/liked" element={<Liked />} />
-              {/* TODO: add Libraries and Settings routes */}
-              <Route path="*" element={<SettingsPage />} />
+              <Route path="/track" element={<TrackPage />} />
             </Route>
           </Routes>
           <PlayerBar />

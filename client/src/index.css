@@ -52,3 +52,15 @@ input[type="range"].slim::-moz-range-thumb {
   background: #fff;
   border: none;
 }
+
+.animate-gradient {
+  background: linear-gradient(135deg, #000000, #1a1a1a, #242323);
+    background-size: 300% 300%;
+  animation: gradientMove 30s ease infinite;
+}
+
+@keyframes gradientMove {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}

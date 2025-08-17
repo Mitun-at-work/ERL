@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { Home, Heart, Library, Settings } from "lucide-react";
+import { Home, Heart, Video, Settings} from "lucide-react";
 
 export default function Sidebar() {
   const linkClass = ({ isActive }: { isActive: boolean }) =>
@@ -10,7 +10,7 @@ export default function Sidebar() {
   return (
     <aside className="w-60 bg-[#121212] text-sm text-gray-300 flex flex-col py-6 border-r border-black/20">
       <div className="px-4 mb-6">
-        <h1 className="text-xl font-bold text-white">My Player</h1>
+        <h1 className="text-xl font-bold text-white">Player</h1>
       </div>
       <nav className="flex flex-col gap-2">
         <NavLink to="/" className={linkClass} end>
@@ -21,13 +21,9 @@ export default function Sidebar() {
           <Heart size={18} />
           Liked Songs
         </NavLink>
-        <NavLink to="/libraries" className={linkClass}>
-          <Library size={18} />
-          Libraries
-        </NavLink>
-        <NavLink to="/settings" className={linkClass}>
+         <NavLink to="/liked" className={linkClass}>
           <Settings size={18} />
-          Settings
+          Settings 
         </NavLink>
       </nav>
     </aside>

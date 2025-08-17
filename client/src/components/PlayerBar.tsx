@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Play,
   Pause,
@@ -11,6 +11,7 @@ import {
   Heart,
 } from "lucide-react";
 import { usePlayer } from "../context/PlayerContext";
+import { Link } from "react-router-dom";
 
 export default function PlayerBar() {
   const {
@@ -42,11 +43,54 @@ export default function PlayerBar() {
     [currentTime, duration]
   );
 
+  // keyboard shortcuts
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      switch (e.key.toLowerCase()) {
+        case " ":
+          e.preventDefault();
+          isPlaying ? pause() : play();
+          break;
+        case "arrowleft":
+          prev();
+          break;
+        case "arrowright":
+          next();
+          break;
+        case "arrowup":
+          e.preventDefault();
+          setMuted(false);
+          setVolume(Math.min(volume + 0.05, 1));
+          break;
+        case "arrowdown":
+          e.preventDefault();
+          setVolume(Math.max(volume - 0.05, 0));
+          if (volume - 0.05 <= 0) setMuted(true);
+          break;
+        case "m":
+          setMuted(!muted);
+          break;
+        case "r":
+          if (repeat === "off") setRepeat("all");
+          else if (repeat === "all") setRepeat("one");
+          else setRepeat("off");
+          break;
+        case "s":
+          setShuffle(!shuffle);
+          break;
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [isPlaying, repeat, shuffle, volume, muted, play, pause, next, prev, setRepeat, setShuffle, setVolume, setMuted]);
+
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-[#181818] text-white border-t border-black/20">
+    <div className="fixed bottom-0 left-0 right-0 h-35 bg-[#181818] text-white border-t border-black/20">
       <div className="w-full px-6 py-3 flex items-center justify-between gap-6">
-        {/* Left: Album info */}
-        <div className="flex items-center gap-3 w-1/4 min-w-[180px]">
+        <Link
+          to="/track"
+          className="flex items-center gap-3 w-1/4 min-w-[180px] cursor-pointer hover:opacity-80"
+        >
           <img
             src={cover || "/default-cover.png"}
             className="w-12 h-12 rounded object-cover"
@@ -54,11 +98,13 @@ export default function PlayerBar() {
           />
           <div className="min-w-0">
             <div className="truncate text-sm">{title || "—"}</div>
-            <div className="truncate text-xs text-gray-400">{artist || "—"}</div>
+            <div className="truncate text-xs text-gray-400">
+              {artist || "—"}
+            </div>
           </div>
-        </div>
+        </Link>
 
-        {/* Center: Controls + seek */}
+        {/* Center: Controls */}
         <div className="flex flex-col items-center flex-1 max-w-3xl">
           <div className="flex items-center gap-4 mb-1 relative">
             <button
@@ -114,10 +160,11 @@ export default function PlayerBar() {
               )}
             </button>
 
-            {/* Like button after repeat */}
             <button
               onClick={() => setLiked(!liked)}
-              className={liked ? "text-green-500" : "text-gray-400 hover:text-green-500"}
+              className={
+                liked ? "text-green-500" : "text-gray-400 hover:text-green-500"
+              }
             >
               <Heart size={18} fill={liked ? "currentColor" : "none"} />
             </button>
@@ -132,13 +179,15 @@ export default function PlayerBar() {
               max={duration || 0}
               value={currentTime}
               onChange={(e) => seek(Number(e.target.value))}
-              style={{ "--seek-progress": `${progress}%` } as React.CSSProperties}
+              style={
+                { "--seek-progress": `${progress}%` } as React.CSSProperties
+              }
             />
             <span>{fmt(duration)}</span>
           </div>
         </div>
 
-        {/* Right: Volume only */}
+        {/* Right: Volume */}
         <div className="flex items-center justify-end gap-3 w-1/4 min-w-[150px]">
           <button
             onClick={() => setMuted(!muted)}
@@ -168,6 +217,9 @@ export default function PlayerBar() {
 function fmt(s?: number) {
   if (!s || !isFinite(s)) return "0:00";
   const m = Math.floor(s / 60);
-  const sec = Math.floor(s % 60).toString().padStart(2, "0");
+  const sec = Math.floor(s % 60)
+    .toString()
+    .padStart(2, "0");
   return `${m}:${sec}`;
 }
+  
